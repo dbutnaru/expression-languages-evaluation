@@ -1,9 +1,13 @@
 package com.alice.evaluate.springexpression;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.platform.runner.JUnitPlatform;
 import org.junit.runner.RunWith;
+import org.openjdk.jmh.annotations.Benchmark;
 import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
@@ -11,16 +15,47 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 
 @RunWith(JUnitPlatform.class)
-class EvaluateSpringExpression {
+class EvaluateSpringExpressionTest {
 
+    /*
+     * 
+     *     @Benchmark
+    public void autoTypeConversion() {
+        class Simple {
+            public List<Boolean> booleanList = new ArrayList<Boolean>();
+        }
+                
+        Simple simple = new Simple();
+
+        simple.booleanList.add(true);
+
+        StandardEvaluationContext simpleContext = new StandardEvaluationContext(simple);
+        ExpressionParser parser = new SpelExpressionParser();
+        // false is passed in here as a string.  SpEL and the conversion service will 
+        // correctly recognize that it needs to be a Boolean and convert it
+        parser.parseExpression("booleanList[0]").setValue(simpleContext, "false");
+
+        // b will be false
+        Boolean b = simple.booleanList.get(0);
+    }
+     * 
+     * */
     @Test
     @DisplayName("Simple string")
     void testSimpleString() {
-        ExpressionParser expressionParser = new SpelExpressionParser();
-        Expression expression = expressionParser.parseExpression("'Any string'");
-        String result = (String) expression.getValue();
+        ExpressionParser parser = new SpelExpressionParser();
+//TODO
+        // evals to "Hello World"
+        String helloWorld = (String) parser.parseExpression("'Hello World'").getValue();
 
-        System.out.println(result);
+        double avogadrosNumber = (Double) parser.parseExpression("6.0221415E+23").getValue();
+
+        // evals to 2147483647
+        int maxValue = (Integer) parser.parseExpression("0x7FFFFFFF").getValue();
+
+        boolean trueValue = (Boolean) parser.parseExpression("true").getValue();
+
+        Object nullValue = parser.parseExpression("null").getValue();
     }
 
     @Test
