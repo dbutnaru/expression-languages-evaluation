@@ -31,7 +31,6 @@
 			<artifactId>jmh-generator-annprocess</artifactId>
 			<version>1.26</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-expression</artifactId>
@@ -49,6 +48,11 @@
 			<artifactId>junit-platform-runner</artifactId>
 			<version>1.7.0</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.velocity</groupId>
+			<artifactId>velocity</artifactId>
+			<version>1.7</version>
 		</dependency>
 	</dependencies>
 
