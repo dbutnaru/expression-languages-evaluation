@@ -22,6 +22,7 @@ class EvaluateJuelTest {
 
         System.out.println(e.getValue(null));
     }
+
     @Test
     @DisplayName("Bean property evaluation")
     void testPropertyEvaluation() {

@@ -1,14 +1,13 @@
-/**
- * 
- */
-package com.alice.evaluate.juel;
+package com.alice.evaluate.jexl;
 
 import java.util.GregorianCalendar;
 import java.util.concurrent.TimeUnit;
 
-import javax.el.ExpressionFactory;
-import javax.el.ValueExpression;
-
+import org.apache.commons.jexl3.JexlBuilder;
+import org.apache.commons.jexl3.JexlContext;
+import org.apache.commons.jexl3.JexlEngine;
+import org.apache.commons.jexl3.JexlExpression;
+import org.apache.commons.jexl3.MapContext;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;
@@ -22,24 +21,17 @@ import org.openjdk.jmh.annotations.Warmup;
 import com.alice.evaluate.Inventor;
 import com.alice.evaluate.PlaceOfBirth;
 
-import de.odysseus.el.ExpressionFactoryImpl;
-import de.odysseus.el.util.SimpleContext;
-
-/**
- * @author dbutnaru
- *
- */
 @BenchmarkMode(Mode.AverageTime)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.MICROSECONDS)
 @Measurement(iterations = 100, time = 1, timeUnit = TimeUnit.MICROSECONDS)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @Fork(1)
 @State(Scope.Benchmark)
-public class JuelEvaluation {
+public class JexlEvaluation {
 
     private Inventor tesla;
     
-    public JuelEvaluation() {
+    public JexlEvaluation() {
         tesla = buildTesla();
     }
 
@@ -50,18 +42,18 @@ public class JuelEvaluation {
 
     @Benchmark
     public void evaluateSimpleString() {
-        ExpressionFactory factory = new ExpressionFactoryImpl();
-        ValueExpression e = factory.createValueExpression("Any string", String.class);
-        e.getValue(null);
+        JexlEngine jexl = new JexlBuilder().create();
+        JexlExpression e = jexl.createExpression("'Any string'");
+        e.evaluate(null);
     }
 
     @Benchmark
     public void beanProperty() {
-        ExpressionFactory factory = new ExpressionFactoryImpl();
-        ValueExpression e = factory.createValueExpression("${tesla}", String.class);
-        SimpleContext context = new SimpleContext();
-        context.setVariable("tesla", factory.createValueExpression(tesla, Inventor.class));
-        System.out.println(e.getValue(context));
+        JexlEngine jexl = new JexlBuilder().create();
+        JexlExpression e = jexl.createExpression("tesla.name");
+        JexlContext context = new MapContext();
+        context.set("tesla", tesla);
+        System.out.println(e.evaluate(context));
     }
 
     private Inventor buildTesla() {
