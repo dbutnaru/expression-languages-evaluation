@@ -3,9 +3,7 @@
  */
 package com.alice.evaluate.springexpression;
 
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openjdk.jmh.annotations.Benchmark;
@@ -33,7 +31,7 @@ import com.alice.evaluate.Society;
  */
 @BenchmarkMode(Mode.AverageTime)
 @Warmup(iterations = 2, time = 1, timeUnit = TimeUnit.MICROSECONDS)
-@Measurement(iterations = 3, time = 1, timeUnit = TimeUnit.MICROSECONDS)
+@Measurement(iterations = 100, time = 1, timeUnit = TimeUnit.MICROSECONDS)
 @OutputTimeUnit(TimeUnit.MICROSECONDS)
 @Fork(1)
 @State(Scope.Benchmark)
