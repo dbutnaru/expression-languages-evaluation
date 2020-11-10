@@ -6,6 +6,7 @@ import org.openjdk.jmh.runner.options.OptionsBuilder;
 
 public class BenchmarkRunner {
     public static void main(String[] args) throws Exception {
+
         Options opt = new OptionsBuilder()
                 .build();
         new Runner(opt).run();
